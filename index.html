@@ -22,7 +22,7 @@
     #illus {
         background-color: turquoise;
         position: absolute;
-        bottom: 0;
+        bottom: 0px;
         width: 100vw;
         height: 50vh;
         z-index: -1;
@@ -53,7 +53,8 @@
         background-color: rgb(239, 228, 176);
     }
     #AI_butt button{
-        background-color: rgb(0, 153, 255);
+        border: 1px solid rgb(33, 143, 216);
+        background-color: rgb(25, 163, 255);
     }
     #difficulty{
         width: 150px;
@@ -64,6 +65,10 @@
         h1{
             font-size: 55px;
         }
+        #illus {
+            height: auto;
+        }
+
         
     }
     </style>
@@ -84,10 +89,10 @@
             <label class="btn btn-outline-success btn-light rounded ms-2" for="o">O</label>
         </div>
 
-        <br>
+        <br><br>
 
         <div id="AI_butt" class="play">
-            <button type="button" class="btn mb-1">Play against AI 🤖</button>
+            <button type="button" class="btn mb-2">Play against AI 🤖</button>
         </div>
 
         <div id="difficulty" class="carousel slide" data-bs-interval="false">
