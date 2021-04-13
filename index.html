@@ -26,6 +26,7 @@
         width: 100vw;
         height: 50vh;
         z-index: -1;
+        display: none;
     }
     h1{
         font-size: 75px;
@@ -49,18 +50,128 @@
         font-family: Arial, Helvetica, sans-serif;
         font-weight: 500;
         width: 250px;
-        border: 1px solid rgb(168, 168, 168);
-        background-color: rgb(239, 228, 176);
+        border: 1px solid rgb(158, 134, 16);
+        background-color: rgb(248, 233, 156);
+    }
+    .play button:hover {
+        box-shadow: 0px 5px 10px gray;
     }
     #AI_butt button{
-        border: 1px solid rgb(33, 143, 216);
-        background-color: rgb(25, 163, 255);
+        border: 1px solid rgb(31, 124, 187);
+        background-color: rgb(83, 185, 253);
     }
     #difficulty{
         width: 150px;
         text-align: center;
     }
 
+    .stats {
+        width: 380px;
+    }
+    #diff_icon {
+        height: 27px;
+        padding-bottom: 5px;
+    }
+    #matches_icon {
+        height: 28px;
+        vertical-align: middle;
+    }
+    #time_icon {
+        height: 24px;
+        vertical-align: middle;
+    }
+
+    .diff, .matches, .time {
+        font-size: 18px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: 500;
+    }
+    .tex {
+        color: rgb(189, 58, 58);
+    }
+
+    #boardbox {
+        position: relative;
+        width: 420px;
+        height: 420px;
+        padding: 20px;
+        background-color: rgb(253, 249, 236);
+        box-shadow: 0px 5px 12px black;
+        overflow: hidden;
+    }
+    #board {
+       width: 380px;
+       height: 380px;
+       text-align: center;
+       font-size: 60px;
+    }
+    #board tr td {
+        border: 8px solid rgb(133, 34, 34);
+        width: 126px;
+        height: 126px;
+        box-shadow: 0px 2px 10px gray;
+    }
+    #board tr td:first-child{
+        border-left: 0;
+    }
+    #board tr td:last-child{
+        border-right: 0;
+    }
+    #board tr:first-child td{
+        border-top: 0;
+    }
+    #board tr:last-child td{
+        border-bottom: 0;
+    }
+    @keyframes slide-in {
+        from {left: -80%;}
+        to {left: 50%;}
+    }
+    @keyframes slide-out {
+        from {left: 50%;}
+        to {left: 200%;}
+    }
+
+    #msg {
+        position: absolute; 
+        left: 50%; 
+        top: 50%; 
+        transform: translate(-50%, -50%); 
+        width: 100%;
+        height: 20%;
+        padding-top: 4.5%;
+        text-align: center; 
+        background-color: rgba(0, 0, 0, 0.582); 
+        color: white;
+        font-weight: bold;
+        font-size: 25px;
+        animation-name: slide-in;
+        animation-duration: 0.5s;
+    }
+
+    #options {
+        width: 380px;
+    }
+    .nav_butt button{
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: 500;
+        width: 250px;
+        border: 1px solid rgb(122, 104, 9);
+        background-color: rgb(248, 233, 156);
+        box-shadow: 0px 2px 5px black;
+    }
+    .nav_butt button:hover {
+        box-shadow: 0px 5px 10px black;
+    }
+    #next_match{
+        border: 1px solid rgb(33, 143, 216);
+        background-color: rgb(83, 253, 168);
+        margin-right: 25px;
+    }
+    #main_menu {
+        margin-left: 25px;
+    }
+    
     @media only screen and (max-width: 600px) {
         h1{
             font-size: 55px;
@@ -68,31 +179,71 @@
         #illus {
             height: auto;
         }
+        .stats {
+            width: 280px;
+        }
+        .diff, .matches, .time {
+            font-size: 15px;
+        }
 
-        
+        #boardbox {
+            width: 290px;
+            height: 290px;
+            padding: 20px;
+        }
+        #msg {
+            padding-top: 4%;
+            font-size: 20px;
+        }
+        #board {
+            width: 250px;
+            height: 250px;
+        }
+        #board tr td {
+            width: 83px;
+            height: 83px;
+            font-size: 50px;
+        }
+
+        #options {
+            width: 320px;
+            
+        }
+        #next_match{
+            margin-right: 5px;
+            font-size: 14.5px;
+            width: 125px;
+        }
+        #main_menu {
+            margin-left: 5px;
+            font-size: 14.5px;
+            width: 120px;
+        }
+
     }
     </style>
 </head>
 <body>
-    <h1 class="text-center mt-4 mb-4">Tic-Tac-Toe</h1>
+    <h1 class="text-center mt-2 mb-2">Tic-Tac-Toe</h1>
     
-    <div id="menu" class="d-flex flex-column align-items-center" >
+    <!-- menu -->
+    <div id="menu"class="d-flex flex-column align-items-center mb-4"  >
         <div id="select_mark">
             Choose Your Mark:
         </div>
 
         <div id="mark_butt" class="btn-group" role="group">
             <input type="radio" class="btn-check" name="mark" id="x" autocomplete="off" checked>
-            <label class="btn btn-outline-danger btn-light rounded me-2" for="x">X</label>
+            <label class="btn btn-outline-danger btn-light rounded shadow me-2" for="x">X</label>
           
             <input type="radio" class="btn-check" name="mark" id="o" autocomplete="off">
-            <label class="btn btn-outline-success btn-light rounded ms-2" for="o">O</label>
+            <label class="btn btn-outline-success btn-light rounded shadow ms-2" for="o">O</label>
         </div>
 
         <br><br>
 
         <div id="AI_butt" class="play">
-            <button type="button" class="btn mb-2">Play against AI 🤖</button>
+            <button type="button" class="btn  mb-2">Play against AI 🤖</button>
         </div>
 
         <div id="difficulty" class="carousel slide" data-bs-interval="false">
@@ -120,12 +271,62 @@
         <br>
 
         <div id="frnd_butt" class="play">
-            <button type="button" class="btn">Play against a Friend 🙋‍♂️</button>
+            <button type="button" class="btn ">Play against a Friend 🙋🏻‍♂️</button>
         </div>
     </div>
 
-    <img src="images/tic-tac-toe.svg" alt="bg" id="illus">
+    <!-- game -->
+    <div id="game" class="d-flex flex-column align-items-center mb-4">
+        <div class="diff mb-2">
+            <img src="images/difficulty.svg" alt="difficulty" id="diff_icon"> Difficulty : <span id="diff_chosen" class="tex">Easy</span>
+        </div>
+      
+        <div class="stats">
+            <div class="d-flex flex-row justify-content-between">
+                <div class="matches">
+                    <img src="images/matches.png" alt="matches" id="matches_icon"> Matches : <span id="matches" class="tex">1</span>
+                </div>
+                <div class="time">
+                    <img src="images/time.svg" alt="time" id="time_icon"> Time : &nbsp;<span id="time" class="tex">02:00</span>
+                </div>
+            </div>
+        </div>
 
+        <br>
+        <div id="boardbox">
+            <div id="msg">
+                Player 1 (X) Wins!
+            </div>
+            <table id="board">
+                <tr>
+                    <td>O</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>7</td>
+                    <td>8</td>
+                </tr>
+            </table>
+        </div>
+        <br>
+        <div id="options">
+            <div class="nav_butt d-flex flex-row justify-content-evenly">
+                <button type="button" id="next_match" class="btn">Next Match! ➡</button>
+                <button type="button" id="main_menu" class="btn">Main Menu 🏠</button>
+            </div>
+        </div>
+       
+
+    </div>
+
+    <img src="images/tic-tac-toe.svg" alt="bg" id="illus">
 
     <script src="js/script.js"></script>
 </body>
