@@ -48,6 +48,7 @@
         0% {opacity: 0.5;}
         100% {opacity: 1;}
     }
+
     @keyframes slide-menu-up {
         0% {
             opacity: 1;
@@ -119,7 +120,6 @@
         animation-delay: 0.1s;
         animation-duration: 0.5s;
         animation-fill-mode: both;
-        animation-play-state: paused;
     }
 
     #menu {
@@ -129,18 +129,16 @@
         animation-name: none; 
         animation-delay: 0.1s;
         animation-duration: 0.7s;
-        animation-fill-mode: both;
-        animation-play-state: paused;
+        animation-fill-mode: both; 
     }
     #game {
-        z-index: -1;
+        z-index: 0;
         position: relative;
         opacity: 0;
         animation-name: none;
         animation-delay: 0.1s; 
         animation-duration: 0.7s;
         animation-fill-mode: both;
-        animation-play-state: paused;
     }
 
     #select_mark{
@@ -202,7 +200,7 @@
         width: 420px;
         height: 420px;
         padding: 20px;
-        background-color: rgb(253, 249, 236);
+        background-image: url(images/wood.webp);
         box-shadow: 0px 5px 12px black;
         overflow: hidden;
     }
@@ -210,13 +208,15 @@
        width: 380px;
        height: 380px;
        text-align: center;
-       font-size: 60px;
+       font-size: 75px;
+       font-family: 'Fredoka One', 'Concert One';
+       text-shadow: 0px 3px 2px gray;
     }
     #board tr td {
         border: 8px solid rgb(133, 34, 34);
         width: 126px;
         height: 126px;
-        /* box-shadow: 0px 2px 10px gray; */
+        cursor: pointer;
     }
     #board tr td:first-child{
         border-left: 0;
@@ -233,19 +233,20 @@
 
     #msg {
         position: absolute; 
-        left: 50%; 
+        left: -80%; 
         top: 50%; 
         transform: translate(-50%, -50%); 
         width: 100%;
         height: 20%;
         padding-top: 4.5%;
         text-align: center; 
-        background-color: rgba(0, 0, 0, 0.582); 
+        background-color: rgba(0, 0, 0, 0.719); 
         color: white;
         font-weight: bold;
         font-size: 25px;
-        animation-name: slide-in;
+        animation-name: none;
         animation-duration: 0.5s;
+        animation-fill-mode: both;
     }
 
     #options {
@@ -271,6 +272,43 @@
         margin-left: 25px;
     }
     
+    #scoreboard {
+        position: absolute;
+        bottom: -100px;
+        left: 50%;
+        transform: translateX(-50%);
+        transition: bottom 1s;
+        margin-bottom: 0;
+        padding: 2px;
+        padding-bottom: 0px;
+        text-align: center;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        box-shadow: 0px 5px 12px black;
+        background-color: #F3E9D3;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+    #player1, #player2, #draw {
+        width: 100px;
+    }
+    #player1::after, #player2::after{
+        content: '';
+        display: block;
+        height: 5px;
+        transition: width .3s;
+    }
+    .mark_inactive::after {
+        width: 0;
+    }
+    .mark_X_active::after {
+        width: 100%;
+        background: #F83157;
+    }
+    .mark_O_active::after {
+        width: 100%;
+        background: green;
+    }
+
     @media only screen and (max-width: 600px) {
         @keyframes slide-game-up {
             0% {
@@ -279,13 +317,13 @@
             }
             100% {
                 opacity: 1;
-                transform: translateY(-90vh);
+                transform: translateY(-145%);
             }
         }
         @keyframes slide-game-down {
             0% {
                 opacity: 1;
-                transform: translateY(-90vh);
+                transform: translateY(-145%);
             }
             100% {
                 opacity: 0;
@@ -321,7 +359,7 @@
         #board tr td {
             width: 83px;
             height: 83px;
-            font-size: 50px;
+            font-size: 60px;
         }
 
         #options {
@@ -338,7 +376,9 @@
             font-size: 14.5px;
             width: 125px;
         }
-
+        #player1, #player2, #draw {
+            width: 80px;
+        }
     }
     </style>
 </head>
@@ -362,18 +402,18 @@
         <br><br>
 
         <div id="AI_butt" class="play">
-            <button type="button" class="btn  mb-2" onclick="playAI(); show_game();">Play against AI 🤖</button>
+            <button type="button" class="btn  mb-2" onclick="play('ai'); show_game();">Play against AI 🤖</button>
         </div>
 
         <div id="difficulty" class="carousel slide" data-bs-interval="false">
             <div class="carousel-inner">
-              <div id="0" class="carousel-item active">
+              <div id="E" class="carousel-item active">
                 <div class="diff">Easy</div>
               </div>
-              <div id="1" class="carousel-item">
+              <div id="M" class="carousel-item">
                 <div class="diff">Medium</div>
               </div>
-              <div id="3" class="carousel-item">
+              <div id="I" class="carousel-item">
                 <div class="diff">Impossible</div>
               </div>
             </div>
@@ -390,54 +430,52 @@
         <br>
 
         <div id="frnd_butt" class="play">
-            <button type="button" class="btn" onclick="playfrnd(); show_game();">Play against a Friend 🙋🏻‍♂️</button>
+            <button type="button" class="btn" onclick="play('frnd'); show_game();">Play against a Friend 🙋🏻‍♂️</button>
         </div>
     </div>
 
     <!-- game -->
     <div id="game" class="d-flex flex-column align-items-center mb-4">
-        <div class="diff mb-2">
-            <img src="images/difficulty.svg" alt="difficulty" id="diff_icon"> Difficulty : <span id="diff_chosen" class="tex">Easy</span>
+        <div id="level" class="diff mb-2">
+            <img src="images/difficulty.svg" alt="difficulty" id="diff_icon"> Difficulty : <span id="diff_chosen" class="tex"></span>
         </div>
       
         <div class="stats">
             <div class="d-flex flex-row justify-content-between">
                 <div class="matches">
-                    <img src="images/matches.png" alt="matches" id="matches_icon"> Matches : <span id="matches" class="tex">1</span>
+                    <img src="images/matches.png" alt="matches" id="matches_icon"> Matches : <span id="matches" class="tex">0</span>
                 </div>
                 <div class="time">
-                    <img src="images/time.svg" alt="time" id="time_icon"> Time : &nbsp;<span id="time" class="tex">02:00</span>
+                    <img src="images/time.svg" alt="time" id="time_icon"> Time : &nbsp;<span id="time" class="tex">00:00</span>
                 </div>
             </div>
         </div>
 
         <br>
         <div id="boardbox">
-            <div id="msg">
-                Player 1 (X) Wins!
-            </div>
+            <div id="msg"></div>
             <table id="board">
                 <tr>
-                    <td>O</td>
-                    <td>1</td>
-                    <td>2</td>
+                    <td id="0"></td>
+                    <td id="1"></td>
+                    <td id="2"></td>
                 </tr>
                 <tr>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
+                    <td id="3"></td>
+                    <td id="4"></td>
+                    <td id="5"></td>
                 </tr>
                 <tr>
-                    <td>6</td>
-                    <td>7</td>
-                    <td>8</td>
+                    <td id="6"></td>
+                    <td id="7"></td>
+                    <td id="8"></td>
                 </tr>
             </table>
         </div>
         <br>
         <div id="options">
             <div class="nav_butt d-flex flex-row justify-content-evenly">
-                <button type="button" id="next_match" class="btn">Next Match! ➡</button>
+                <button type="button" id="next_match" class="btn" onclick="next_match();">Next Match! ➡</button>
                 <button type="button" id="main_menu" class="btn" onclick="show_menu();">Main Menu 🏠</button>
             </div>
         </div>
@@ -445,57 +483,225 @@
 
     </div>
 
+    <!-- scoreboard -->
+    <div id="scoreboard" class="d-flex flex-row align-items-center justify-content-between">
+        <div>
+            <div>
+                <span id="player1_mark">X </span>: <span id="player1_score">0</span>
+            </div>
+            <div id="player1">
+                Player 1
+            </div>
+        </div>
+        
+        <div>
+            <div>
+                <span id="player2_mark">O </span>: <span id="player2_score">0</span>
+            </div>
+            <div id="player2">
+            </div>
+        </div>
+        
+        <div>
+            <div>
+                <span id="draw_score">0</span>
+            </div>
+            <div id="draw">
+                Draws
+            </div>
+        </div>
+        
+    </div>
+
     <img src="images/tic-tac-toe.svg" alt="bg" id="illus">
 
     <script src="js/script.js"></script>
     <script>
         // "X" or "O"
-        var mark;
-        // 0 - easy, 1 - medium, 3 - impossible
-        var difficulty; 
+        var player_mark;
+        var opponent_mark;
 
-        function get_data(){
-            mark = (document.getElementById("x").checked) ? "X" : "O";
+        var curr_turn;
+        // E, M, I; 
+        //-1 - opponent is frnd
+        var ai_level; 
 
-            var diff_list = document.querySelectorAll(".carousel-item");
-            diff_list.forEach( (tag) => {
-                if(tag.classList.contains("active"))
-                {
-                    difficulty = tag.id;
-                }
-            });
+        var redX = "#F83157"; // X
+        var greenO = "green"; // O
+
+        var winning_combos = [
+            [0,1,2],
+            [3,4,5],
+            [6,7,8],
+            [0,3,6],
+            [1,4,7],
+            [2,5,8],
+            [0,4,8],
+            [2,4,6]
+        ];
+        var origBoard = [0,0,0,0,0,0,0,0,0];
+
+        //getting the palyer_mark & opponent_mark and ai_level (difficulty)
+        function get_data(opponent){
+            if(document.getElementById("x").checked)
+            {
+                player_mark = "X";
+                document.getElementById("player1").className = "mark_inactive";
+                document.getElementById('player1_mark').innerHTML = `${player_mark} `;
+                document.getElementById('player1_mark').style.color = redX;
+
+                opponent_mark = "O";
+                document.getElementById("player2").className = "mark_inactive";
+                document.getElementById('player2_mark').innerHTML = `${opponent_mark} `;
+                document.getElementById('player2_mark').style.color = greenO;
+            }
+            else
+            {
+                player_mark = "O";
+                document.getElementById("player1").className = "mark_inactive";
+                document.getElementById('player1_mark').innerHTML = `${player_mark} `;
+                document.getElementById('player1_mark').style.color = greenO;
+
+                opponent_mark = "X";
+                document.getElementById("player2").className = "mark_inactive";
+                document.getElementById('player2_mark').innerHTML = `${opponent_mark} `;
+                document.getElementById('player2_mark').style.color = redX;
+            }      
+            
+            if(opponent == "ai")
+            {
+                var diff_list = document.querySelectorAll(".carousel-item");
+                diff_list.forEach( (tag) => {
+                    if(tag.classList.contains("active"))
+                        ai_level = tag.id;
+                });
+                document.getElementById("level").style.display = "block";
+                document.getElementById("diff_chosen").innerHTML = (ai_level == "E") ? "Easy" : ((ai_level == "M") ? "Medium" : "Impossible");
+                document.getElementById("player2").innerHTML = "AI";
+            }
+            else
+            {
+                ai_level = -1;
+                document.getElementById("level").style.display = "none";
+                document.getElementById("player2").innerHTML = "Player 2";
+            }
         }
 
+        var bg_img = document.getElementById("illus");
         var menu_div = document.getElementById("menu");
         var game_div = document.getElementById("game");
-        var bg_img = document.getElementById("illus");
+
+        var match_counter = document.getElementById("matches");
+        var timer = document.getElementById("time");
+        var msg = document.getElementById("msg");
+        var cells = document.querySelectorAll("td");
+        var scoreboard = document.getElementById("scoreboard");        
 
         function show_game(){
             menu_div.style.animationName = "slide-menu-up";
             game_div.style.animationName = "slide-game-up";
-            bg_img.style.animationName = "fadeout";
-
-            menu_div.style.animationPlayState = "running";
-            game_div.style.animationPlayState = "running";
-            bg_img.style.animationPlayState = "running";      
+            bg_img.style.animationName = "fadeout";  
+            scoreboard.style.bottom = "0";
+            
+            match_counter.innerHTML = "0";
+            timer.innerHTML = "00:00";
         }
-
         function show_menu(){
             menu_div.style.animationName = "slide-menu-down";
             game_div.style.animationName = "slide-game-down";
             bg_img.style.animationName = "fadein";
+            scoreboard.style.bottom = "-100px";
         }
         
-        function playAI(){
-            get_data();
+        function start_msg(turn)
+        {
+            var name = (turn == player_mark) ? `Player 1 (${turn}) ` : ((ai_level == -1) ? `Player 2 (${turn}) ` : `AI (${turn}) `);
+            msg.innerHTML = `${name} Starts`;
 
+            setTimeout(() => {msg.style.animationName = "slide-in";}, 300);
+            setTimeout(() => {msg.style.animationName = "slide-out";}, 2500);
         }
 
-        function playfrnd(){
-            get_data();
-     
+        function toss()
+        {
+            if( Math.round(Math.random()) == 0 )
+                return player_mark;
+            else
+                return opponent_mark;
         }
-    
+
+        function reset()
+        {
+            origBoard = [0,0,0,0,0,0,0,0,0];
+            cells.forEach((cell) => {
+                cell.innerHTML = "";
+                cell.addEventListener('mouseover', turnmouse);
+                cell.addEventListener('mouseleave', turnmouse);
+                cell.addEventListener('click', turnmouse);
+            });
+        }
+        
+        function turnmouse(event)
+        {
+            turn(event.target.id, curr_turn, event.type);
+        }
+        function turn(cell_index, mark, mouseevent)
+        {
+            var cell = document.getElementById(cell_index);
+            if(origBoard[cell_index] == 0)
+            {
+                if(mouseevent == 'mouseover')
+                {
+                    cell.style.opacity = 0.5;
+                    cell.style.color = "gray";
+                    cell.innerHTML = mark;
+                }
+                else if(mouseevent == 'mouseleave')
+                {
+                    cell.style.opacity = 1;
+                    cell.innerHTML = "";
+                }
+                if(mouseevent == 'click')
+                {
+                    origBoard[cell_index] = mark;
+                    cell.style.opacity = 1;
+                    cell.style.color = (mark == "X")? redX : greenO;
+                    cell.innerHTML = mark;
+                }
+            }
+        }
+
+        // opponent = "ai"/"frnd"
+        function play(opponent)
+        {
+            document.getElementById("next_match").disabled = true;
+            reset();
+            get_data(opponent);
+            curr_turn = toss();
+            start_msg(curr_turn);
+            document.getElementById("player1").className = "mark_inactive";
+            document.getElementById("player2").className = "mark_inactive";
+
+            if(player_mark == curr_turn)
+            {
+                document.getElementById("player1").className = `mark_${curr_turn}_active`;
+            }
+            else
+            {
+                document.getElementById("player2").className = `mark_${curr_turn}_active`;
+            }
+            
+            
+        }
+
+        function next_match()
+        {
+            document.getElementById("next_match").disabled = true;
+            if(ai_level == -1)
+                play("frnd");
+            else
+                play("ai");
+        }
 
     </script>
 </body>
