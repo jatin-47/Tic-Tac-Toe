@@ -135,6 +135,7 @@
     #game {
         z-index: -1;
         position: relative;
+        opacity: 0;
         animation-name: none;
         animation-delay: 0.1s; 
         animation-duration: 0.7s;
@@ -278,13 +279,13 @@
             }
             100% {
                 opacity: 1;
-                transform: translateY(-138%);
+                transform: translateY(-90vh);
             }
         }
         @keyframes slide-game-down {
             0% {
                 opacity: 1;
-                transform: translateY(-138%);
+                transform: translateY(-90vh);
             }
             100% {
                 opacity: 0;
@@ -335,7 +336,7 @@
         #main_menu {
             margin-left: 5px;
             font-size: 14.5px;
-            width: 120px;
+            width: 125px;
         }
 
     }
