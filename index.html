@@ -95,6 +95,7 @@
         margin: 0;
         padding: 0;
         height: 100vh;
+        height: calc(var(--vh, 1vh) * 100);;
         background-color: turquoise;
         overflow: hidden;
         position: relative;
@@ -116,6 +117,7 @@
         bottom: 0;
         width: 100vw;
         height: 50vh;
+        height: calc(var(--vh, 1vh) * 50);
         animation-name: none;
         animation-delay: 0.1s;
         animation-duration: 0.5s;
@@ -126,6 +128,7 @@
         z-index: -1;
         position: relative;
         margin-bottom: 60vh;
+        margin-bottom: calc(var(--vh, 1vh) * 60);
         animation-name: none; 
         animation-delay: 0.1s;
         animation-duration: 0.7s;
@@ -246,6 +249,7 @@
         font-size: 25px;
         animation-name: none;
         animation-duration: 0.5s;
+        animation-delay: 0.5s;
         animation-fill-mode: both;
     }
 
@@ -517,7 +521,11 @@
 
     <script src="js/script.js"></script>
     <script>
-        document.body.scrollTop = document.body.scrollHeight - document.body.clientHeight;
+        // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+        let vh = window.innerHeight * 0.01;
+        // Then we set the value in the --vh custom property to the root of the document
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+
         // "X" or "O"
         var player_mark;
         var opponent_mark;
@@ -619,8 +627,12 @@
             var name = (turn == player_mark) ? `Player 1 (${turn}) ` : ((ai_level == -1) ? `Player 2 (${turn}) ` : `AI (${turn}) `);
             msg.innerHTML = `${name} Starts`;
 
-            setTimeout(() => {msg.style.animationName = "slide-in";}, 300);
-            setTimeout(() => {msg.style.animationName = "slide-out";}, 2500);
+            msg.style.animationName = "slide-in";
+
+            setTimeout(() => {
+                msg.style.animationName = "slide-out";
+                add_event();
+            }, 2200);
         }
 
         function toss()
@@ -636,12 +648,30 @@
             origBoard = [0,0,0,0,0,0,0,0,0];
             cells.forEach((cell) => {
                 cell.innerHTML = "";
+                cell.style.backgroundColor = "";
+            });
+            remove_event();
+        }
+
+        function add_event()
+        {
+            cells.forEach((cell) => {
                 cell.addEventListener('mouseover', turnmouse);
                 cell.addEventListener('mouseleave', turnmouse);
                 cell.addEventListener('click', turnmouse);
+                cell.style.cursor = "pointer";
             });
         }
-        
+        function remove_event()
+        {
+            cells.forEach((cell) => {
+                cell.removeEventListener('mouseover', turnmouse);
+                cell.removeEventListener('mouseleave', turnmouse);
+                cell.removeEventListener('click', turnmouse);
+                cell.style.cursor = "default";
+            });
+        }
+
         function turnmouse(event)
         {
             turn(event.target.id, curr_turn, event.type);
@@ -668,8 +698,49 @@
                     cell.style.opacity = 1;
                     cell.style.color = (mark == "X")? redX : greenO;
                     cell.innerHTML = mark;
+
+                    var gameWon = checkWin(origBoard, mark);
+                    if(gameWon)
+                    {
+                        gameOver(gameWon);
+                    }
+
                 }
             }
+        }
+
+        function checkWin(board, player)
+        {
+            var gameWon = null;
+            var score = 0;
+            var i;
+
+            for(i = 0; i<winning_combos.length; i++)
+            {
+                score = 0;
+                for(var j = 0; j<3; j++)
+                {
+                    if(origBoard[winning_combos[i][j]] == player)
+                        score++;
+                    else
+                        break;
+                }
+                if(score == 3)
+                {
+                    gameWon = {index: i, player : player};
+                    break;
+                }
+            }
+            return gameWon;
+        }
+
+        function gameOver(gameWon) 
+        {
+            for(var i = 0; i<3; i++)
+            {
+                document.getElementById(winning_combos[gameWon.index][i]).style.backgroundColor = "#f5f52c";
+            }
+            remove_event();
         }
 
         // opponent = "ai"/"frnd"
@@ -678,11 +749,12 @@
             document.getElementById("next_match").disabled = true;
             reset();
             get_data(opponent);
+
             curr_turn = toss();
             start_msg(curr_turn);
+
             document.getElementById("player1").className = "mark_inactive";
             document.getElementById("player2").className = "mark_inactive";
-
             if(player_mark == curr_turn)
             {
                 document.getElementById("player1").className = `mark_${curr_turn}_active`;
