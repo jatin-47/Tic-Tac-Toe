@@ -1,0 +1,365 @@
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+@keyframes slide-in {
+    from {left: -80%;}
+    to {left: 50%;}
+}
+@keyframes slide-out {
+    from {left: 50%;}
+    to {left: 200%;}
+}
+
+@keyframes fadeout {
+    0% {opacity: 1;}
+    100% {opacity: 0.5;}
+}
+@keyframes fadein {
+    0% {opacity: 0.5;}
+    100% {opacity: 1;}
+}
+
+@keyframes slide-menu-up {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-150%);
+    }
+}
+@keyframes slide-menu-down {
+    0% {
+        opacity: 0;
+        transform: translateY(-150%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+
+@keyframes slide-game-up {
+    0% {
+        opacity: 0;
+        transform: translateY(0%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(-125%);
+    }
+}
+@keyframes slide-game-down {
+    0% {
+        opacity: 1;
+        transform: translateY(-125%);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(0%);
+    }
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);;
+    background-color: turquoise;
+    overflow: hidden;
+    position: relative;
+    z-index: -5;
+}
+h1{
+    font-size: 75px;
+    font-family: 'Fredoka One', 'Concert One';
+    color: black;
+    background-color: turquoise;
+    -webkit-text-fill-color: white;
+    -webkit-text-stroke: 2.5px black;
+    text-shadow: 3px 3px 2px black;
+}
+#illus {
+    background-color: turquoise;
+    position: absolute;
+    z-index: -2;
+    bottom: 0;
+    width: 100vw;
+    height: 50vh;
+    height: calc(var(--vh, 1vh) * 50);
+    animation-name: none;
+    animation-delay: 0.1s;
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
+}
+
+#menu {
+    z-index: -1;
+    position: relative;
+    margin-bottom: 60vh;
+    margin-bottom: calc(var(--vh, 1vh) * 60);
+    animation-name: none; 
+    animation-delay: 0.1s;
+    animation-duration: 0.7s;
+    animation-fill-mode: both; 
+}
+#game {
+    z-index: 0;
+    position: relative;
+    opacity: 0;
+    animation-name: none;
+    animation-delay: 0.1s; 
+    animation-duration: 0.7s;
+    animation-fill-mode: both;
+}
+
+#select_mark{
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+#mark_butt label{
+    width: 100px;
+    font-weight: bold;
+}
+.play button{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    width: 250px;
+    border: 1px solid rgb(158, 134, 16);
+    background-color: rgb(248, 233, 156);
+}
+.play button:hover {
+    box-shadow: 0px 5px 10px gray;
+}
+#AI_butt button{
+    border: 1px solid rgb(31, 124, 187);
+    background-color: rgb(83, 185, 253);
+}
+#difficulty{
+    width: 150px;
+    text-align: center;
+}
+
+.stats {
+    width: 380px;
+}
+#diff_icon {
+    height: 27px;
+    padding-bottom: 5px;
+}
+#matches_icon {
+    height: 28px;
+    vertical-align: middle;
+}
+#time_icon {
+    height: 24px;
+    vertical-align: middle;
+}
+
+.diff, .matches, .time {
+    font-size: 18px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+}
+.tex {
+    color: rgb(189, 58, 58);
+}
+
+#boardbox {
+    position: relative;
+    width: 420px;
+    height: 420px;
+    padding: 20px;
+    background-image: url(images/wood.webp);
+    box-shadow: 0px 5px 12px black;
+    overflow: hidden;
+}
+#board {
+    width: 380px;
+    height: 380px;
+    text-align: center;
+    font-size: 75px;
+    font-family: 'Fredoka One', 'Concert One';
+    text-shadow: 0px 3px 2px gray;
+}
+#board tr td {
+    border: 8px solid rgb(133, 34, 34);
+    width: 126px;
+    height: 126px;
+    cursor: pointer;
+}
+#board tr td:first-child{
+    border-left: 0;
+}
+#board tr td:last-child{
+    border-right: 0;
+}
+#board tr:first-child td{
+    border-top: 0;
+}
+#board tr:last-child td{
+    border-bottom: 0;
+}
+
+#msg {
+    position: absolute; 
+    left: -80%; 
+    top: 50%; 
+    transform: translate(-50%, -50%); 
+    width: 100%;
+    height: 20%;
+    padding-top: 4.5%;
+    text-align: center; 
+    background-color: rgba(0, 0, 0, 0.719); 
+    color: white;
+    font-weight: bold;
+    font-size: 25px;
+    animation-name: none;
+    animation-duration: 0.5s;
+    animation-delay: 0.5s;
+    animation-fill-mode: both;
+}
+
+#options {
+    width: 380px;
+}
+.nav_butt button{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    width: 250px;
+    border: 1px solid rgb(122, 104, 9);
+    background-color: rgb(248, 233, 156);
+    box-shadow: 0px 2px 5px black;
+}
+.nav_butt button:hover {
+    box-shadow: 0px 5px 10px black;
+}
+#next_match{
+    border: 1px solid rgb(33, 143, 216);
+    background-color: rgb(83, 253, 168);
+    margin-right: 25px;
+}
+#main_menu {
+    margin-left: 25px;
+}
+
+#scoreboard {
+    position: absolute;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: bottom 1s;
+    margin-bottom: 0;
+    padding: 2px;
+    padding-bottom: 0px;
+    text-align: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    box-shadow: 0px 5px 12px black;
+    background-color: #F3E9D3;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+#player1, #player2, #draw {
+    width: 100px;
+}
+#player1::after, #player2::after{
+    content: '';
+    display: block;
+    height: 5px;
+    transition: width .3s;
+}
+.mark_inactive::after {
+    width: 0;
+}
+.mark_X_active::after {
+    width: 100%;
+    background: #F83157;
+}
+.mark_O_active::after {
+    width: 100%;
+    background: green;
+}
+
+@media only screen and (max-width: 600px) {
+    @keyframes slide-game-up {
+        0% {
+            opacity: 0;
+            transform: translateY(0%);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(-145%);
+        }
+    }
+    @keyframes slide-game-down {
+        0% {
+            opacity: 1;
+            transform: translateY(-145%);
+        }
+        100% {
+            opacity: 0;
+            transform: translateY(0%);
+        }
+    }
+    h1{
+        font-size: 55px;
+    }
+    #illus {
+        height: auto;
+    }
+    .stats {
+        width: 280px;
+    }
+    .diff, .matches, .time {
+        font-size: 15px;
+    }
+
+    #boardbox {
+        width: 290px;
+        height: 290px;
+        padding: 20px;
+    }
+    #msg {
+        padding-top: 4%;
+        font-size: 20px;
+    }
+    #board {
+        width: 250px;
+        height: 250px;
+    }
+    #board tr td {
+        width: 83px;
+        height: 83px;
+        font-size: 45px;
+    }
+
+    #options {
+        width: 320px;
+        
+    }
+    #next_match{
+        margin-right: 5px;
+        font-size: 14.5px;
+        width: 125px;
+    }
+    #main_menu {
+        margin-left: 5px;
+        font-size: 14.5px;
+        width: 125px;
+    }
+    #player1, #player2, #draw {
+        width: 80px;
+    }
+}
