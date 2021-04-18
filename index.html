@@ -600,11 +600,41 @@
         var menu_div = document.getElementById("menu");
         var game_div = document.getElementById("game");
 
-        var match_counter = document.getElementById("matches");
+        var matches = document.getElementById("matches");
         var timer = document.getElementById("time");
         var msg = document.getElementById("msg");
         var cells = document.querySelectorAll("td");
-        var scoreboard = document.getElementById("scoreboard");        
+        var scoreboard = document.getElementById("scoreboard");   
+        var player1_score = document.getElementById("player1_score");     
+        var player2_score = document.getElementById("player2_score");
+        var draw_score = document.getElementById("draw_score");
+
+        var seconds = 0;
+        var timer_is_on = 0;
+        var t;
+
+        function padnum(num) {
+            if(num <=9)
+                num = `0${num}`;
+            return num;
+        }
+        function timedCount() {
+            var mins = padnum(parseInt(seconds/60));
+            var secs = padnum(seconds - 60*mins);
+            timer.innerHTML = `${mins}:${secs}`;
+            seconds = seconds + 1;
+            t = setTimeout(timedCount, 1000);
+        }
+        function startCount() {
+            if (!timer_is_on) {
+                timer_is_on = 1;
+                timedCount();
+            }
+        }
+        function stopCount() {
+            clearTimeout(t);
+            timer_is_on = 0;
+        }
 
         function show_game(){
             menu_div.style.animationName = "slide-menu-up";
@@ -612,8 +642,14 @@
             bg_img.style.animationName = "fadeout";  
             scoreboard.style.bottom = "0";
             
-            match_counter.innerHTML = "0";
+            //resetting
+            matches.innerHTML = "0";
+            seconds = 0;
             timer.innerHTML = "00:00";
+
+            player1_score.innerHTML = "0";
+            player2_score.innerHTML = "0";
+            draw_score.innerHTML = "0";
         }
         function show_menu(){
             menu_div.style.animationName = "slide-menu-down";
@@ -632,17 +668,26 @@
             setTimeout(() => {
                 msg.style.animationName = "slide-out";
                 add_event();
+                msg.onanimationend = startCount();
             }, 1500);
         }
-
         function winner_msg(winner)
         {
             var name = (winner == player_mark) ? `Player 1 (${winner}) ` : ((ai_level == -1) ? `Player 2 (${winner}) ` : `AI (${winner}) `);
             msg.innerHTML = `${name} Wins!`;
-
+            stopCount();
             msg.style.animationDelay = "0s";
             msg.style.animationName = "slide-in";            
         }
+        function draw_msg()
+        {
+            msg.innerHTML = `Draw!`;
+            stopCount();
+            msg.style.animationDelay = "0s";
+            msg.style.animationName = "slide-in";
+        }
+
+
         function toss()
         {
             if( Math.round(Math.random()) == 0 )
@@ -743,6 +788,11 @@
                 if(origBoard[i] == 0)
                     return false;
             }
+            remove_event();
+            document.getElementById("next_match").disabled = false;
+            draw_msg();
+            matches.innerHTML = parseInt(matches.innerHTML) + 1;
+            draw_score.innerHTML = parseInt(draw_score.innerHTML) + 1;
             return true;
         }
         
@@ -780,6 +830,15 @@
             remove_event();
             document.getElementById("next_match").disabled = false;
             winner_msg(gameWon.player);
+            matches.innerHTML = parseInt(matches.innerHTML) + 1;
+            if(gameWon.player == player_mark)
+            {
+                player1_score.innerHTML = parseInt(player1_score.innerHTML) + 1;
+            }
+            else {
+                player2_score.innerHTML = parseInt(player2_score.innerHTML) + 1;
+            }
+
         }
 
         // opponent = "ai"/"frnd"
