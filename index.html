@@ -550,7 +550,7 @@
         ];
         var origBoard = [0,0,0,0,0,0,0,0,0];
 
-        //getting the palyer_mark & opponent_mark and ai_level (difficulty)
+        //getting the palyer_mark & opponent_mark and ai_level (difficulty) & setting up names in scoreboard
         function get_data(opponent){
             if(document.getElementById("x").checked)
             {
@@ -621,20 +621,28 @@
             bg_img.style.animationName = "fadein";
             scoreboard.style.bottom = "-100px";
         }
-        
         function start_msg(turn)
         {
             var name = (turn == player_mark) ? `Player 1 (${turn}) ` : ((ai_level == -1) ? `Player 2 (${turn}) ` : `AI (${turn}) `);
             msg.innerHTML = `${name} Starts`;
 
+            msg.style.animationDelay = "0.3s";
             msg.style.animationName = "slide-in";
-
+            
             setTimeout(() => {
                 msg.style.animationName = "slide-out";
                 add_event();
-            }, 2200);
+            }, 1500);
         }
 
+        function winner_msg(winner)
+        {
+            var name = (winner == player_mark) ? `Player 1 (${winner}) ` : ((ai_level == -1) ? `Player 2 (${winner}) ` : `AI (${winner}) `);
+            msg.innerHTML = `${name} Wins!`;
+
+            msg.style.animationDelay = "0s";
+            msg.style.animationName = "slide-in";            
+        }
         function toss()
         {
             if( Math.round(Math.random()) == 0 )
@@ -672,10 +680,25 @@
             });
         }
 
+        function active_player()
+        {
+            document.getElementById("player1").className = "mark_inactive";
+            document.getElementById("player2").className = "mark_inactive";
+            if(player_mark == curr_turn)
+            {
+                document.getElementById("player1").className = `mark_${curr_turn}_active`;
+            }
+            else
+            {
+                document.getElementById("player2").className = `mark_${curr_turn}_active`;
+            }
+        }
+
         function turnmouse(event)
         {
-            turn(event.target.id, curr_turn, event.type);
+            turn(event.target.id, curr_turn, event.type);            
         }
+
         function turn(cell_index, mark, mouseevent)
         {
             var cell = document.getElementById(cell_index);
@@ -704,11 +727,25 @@
                     {
                         gameOver(gameWon);
                     }
-
+                    else if(!checkTie())
+                    {
+                        curr_turn = (curr_turn == 'X')? 'O' : 'X';
+                        active_player();
+                    }
                 }
             }
         }
 
+        function checkTie()
+        {
+            for(var i=0 ; i<origBoard.length; i++)
+            {
+                if(origBoard[i] == 0)
+                    return false;
+            }
+            return true;
+        }
+        
         function checkWin(board, player)
         {
             var gameWon = null;
@@ -741,6 +778,8 @@
                 document.getElementById(winning_combos[gameWon.index][i]).style.backgroundColor = "#f5f52c";
             }
             remove_event();
+            document.getElementById("next_match").disabled = false;
+            winner_msg(gameWon.player);
         }
 
         // opponent = "ai"/"frnd"
@@ -751,29 +790,21 @@
             get_data(opponent);
 
             curr_turn = toss();
-            start_msg(curr_turn);
-
-            document.getElementById("player1").className = "mark_inactive";
-            document.getElementById("player2").className = "mark_inactive";
-            if(player_mark == curr_turn)
-            {
-                document.getElementById("player1").className = `mark_${curr_turn}_active`;
-            }
-            else
-            {
-                document.getElementById("player2").className = `mark_${curr_turn}_active`;
-            }
-            
-            
+            start_msg(curr_turn);          
+            active_player();
         }
 
         function next_match()
         {
             document.getElementById("next_match").disabled = true;
-            if(ai_level == -1)
-                play("frnd");
-            else
-                play("ai");
+            msg.style.animationName = "slide-out";
+            setTimeout(() => {
+                if(ai_level == -1)
+                    play("frnd");
+                else
+                    play("ai");
+            }, 500)
+            
         }
 
     </script>
