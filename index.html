@@ -671,6 +671,7 @@
                 msg.style.animationName = "slide-out";
                 add_event();
                 msg.onanimationend = startCount();
+                msg.onanimationend = check_ai_turn();
             }, 1500);
         }
         function winner_msg(winner)
@@ -746,6 +747,53 @@
             turn(event.target.id, curr_turn, event.type);            
         }
 
+        //randomlly chooses a spot
+        function easy_level()
+        {
+            var unplayed_indexes = [];
+            for(var i=0; i<origBoard.length; i++)
+            {
+                if(origBoard[i] == 0)
+                    unplayed_indexes.push(i);
+            }
+            return unplayed_indexes[Math.floor( Math.random()*unplayed_indexes.length )];
+        }
+
+        //-------------
+        function medium_level()
+        {
+            return easy_level(); //temp
+        }
+
+        //-----------------
+        function impossible_level()
+        {
+            return easy_level(); //temp
+        }
+
+        function AI_move()
+        {
+            if(ai_level == "E")
+                return easy_level();
+            else if(ai_level == "M")
+                return medium_level();
+            else
+                return impossible_level();
+        }
+
+        function check_ai_turn()
+        {
+            if(ai_level != -1 && curr_turn == opponent_mark)
+            {
+                remove_event();
+                setTimeout(() => {
+                    turn(AI_move(), curr_turn, "click");
+                } , Math.floor( Math.random()*2000 + 1 ) );
+            }
+            else
+                add_event();
+        }
+        
         function turn(cell_index, mark, mouseevent)
         {
             var cell = document.getElementById(cell_index);
@@ -778,6 +826,7 @@
                     {
                         curr_turn = (curr_turn == 'X')? 'O' : 'X';
                         active_player();
+                        check_ai_turn();
                     }
                 }
             }
