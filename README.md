@@ -1,10 +1,10 @@
 # Tic-Tac-Toe <img src="https://github.com/jatin-47/Tic-Tac-Toe/blob/main/images/favicon.png" width="30">
-<img src="https://github.com/jatin-47/Tic-Tac-Toe/blob/main/images/ScreenShots/title.png" align="right" style="display:inline;" width="380" >
+<img src="https://github.com/jatin-47/Tic-Tac-Toe/blob/main/images/ScreenShots/title.png" align="right" style="display:inline;" width="280" >
 
 Tic-Tac-Toe game AI using **Minimax algorithm with alpha-beta pruning optimization.**<br>Heuristic/Evaluation function is such that it chooses the move that makes fastest win / slowest loss by giving score to the terminal states based on the their depth.
 
 
-<a href="https://jatin-47.github.io/Tic-Tac-Toe/"> <img src="https://github.com/jatin-47/Tic-Tac-Toe/blob/main/images/playnow.png" alt="PLAY NOW!" width="200" height="63"> </a>
+<a href="https://jatin-47.github.io/Tic-Tac-Toe/"> <img src="https://github.com/jatin-47/Tic-Tac-Toe/blob/main/images/playnow.png" alt="PLAY NOW!" width="150" height="50"> </a>
 
 ### Features: ✨
 
@@ -36,8 +36,17 @@ Score to a terminal state is assigned with +- depth of that state which accounts
 - [Tic Tac Toe Project Tutorial](https://www.youtube.com/watch?v=P2TcQ3h0ipQ) - freecodecamp (YouTube)
 
 ## Screenshots: 📷
-<img src="https://github.com/jatin-47/Tic-Tac-Toe/blob/main/images/ScreenShots/ss1.png" alt="SS1" width="800">
-<br>
-
-<img src="https://github.com/jatin-47/Tic-Tac-Toe/blob/main/images/ScreenShots/ss2.png" alt="SS2" width="800">
-<br>
+<table>
+  <tr>
+     <td>Main Menu</td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/jatin-47/Tic-Tac-Toe/blob/main/images/ScreenShots/ss1.png" alt="SS1" width="100%"></td>
+  </tr>
+  <tr>
+     <td>Game Screen</td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/jatin-47/Tic-Tac-Toe/blob/main/images/ScreenShots/ss2.png" alt="SS2" width="100%"></td>
+  </tr>
+ </table>
