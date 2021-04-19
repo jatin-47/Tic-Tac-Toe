@@ -10,7 +10,7 @@ Tic-Tac-Toe game AI using **Minimax algorithm with alpha-beta pruning optimizati
 
 1. User-friendly UI/UX with very smooth sliding animations.
 2. Choose your own marker (X/O).
-3. Two modes - **Play against AI 🤖** or **Play against a Friend 🙋🏻‍♂️**.
+3. 2 modes - **Play against AI 🤖** or **Play against a Friend 🙋🏻‍♂️**.
 4. **3 difficulty levels** for playing against AI.
 5. Number of matches played, timer and scoreboard with the playing player highlighted.
 6. Strip message animation.
