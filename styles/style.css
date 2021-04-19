@@ -56,13 +56,13 @@
     }
     100% {
         opacity: 1;
-        transform: translateY(-125%);
+        transform: translateY(-127%);
     }
 }
 @keyframes slide-game-down {
     0% {
         opacity: 1;
-        transform: translateY(-125%);
+        transform: translateY(-127%);
     }
     100% {
         opacity: 0;
@@ -81,7 +81,7 @@ body{
     z-index: -5;
 }
 h1{
-    font-size: 75px;
+    font-size: 4.22rem;
     font-family: 'Fredoka One', 'Concert One';
     color: black;
     background-color: turquoise;
@@ -124,19 +124,19 @@ h1{
 }
 
 #select_mark{
-    font-size: 20px;
+    font-size: 1.15rem;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 500;
-    margin-bottom: 10px;
+    margin-bottom: 7px;
 }
 #mark_butt label{
-    width: 100px;
+    width: 80px;
     font-weight: bold;
 }
 .play button{
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 500;
-    width: 250px;
+    width: 230px;
     border: 1px solid rgb(158, 134, 16);
     background-color: rgb(248, 233, 156);
 }
@@ -148,28 +148,28 @@ h1{
     background-color: rgb(83, 185, 253);
 }
 #difficulty{
-    width: 150px;
+    width: 130px;
     text-align: center;
 }
 
 .stats {
-    width: 380px;
+    width: 348px;
 }
 #diff_icon {
-    height: 27px;
-    padding-bottom: 5px;
+    height: 25px;
+    padding-bottom: 3px;
 }
 #matches_icon {
-    height: 28px;
+    height: 26px;
     vertical-align: middle;
 }
 #time_icon {
-    height: 24px;
+    height: 22px;
     vertical-align: middle;
 }
 
 .diff, .matches, .time {
-    font-size: 18px;
+    font-size: 15.5px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 500;
 }
@@ -179,25 +179,25 @@ h1{
 
 #boardbox {
     position: relative;
-    width: 420px;
-    height: 420px;
+    width: 380px;
+    height: 380px;
     padding: 20px;
     background-image: url(../images/wood.webp);
     box-shadow: 0px 5px 12px black;
     overflow: hidden;
 }
 #board {
-    width: 380px;
-    height: 380px;
+    width: 340px;
+    height: 340px;
     text-align: center;
-    font-size: 75px;
+    font-size: 68px;
     font-family: 'Fredoka One', 'Concert One';
     text-shadow: 0px 3px 2px gray;
 }
 #board tr td {
-    border: 8px solid rgb(133, 34, 34);
-    width: 126px;
-    height: 126px;
+    border: 7px solid rgb(133, 34, 34);
+    width: 113px;
+    height: 113px;
     cursor: pointer;
 }
 #board tr td:first-child{
@@ -233,12 +233,15 @@ h1{
 }
 
 #options {
-    width: 380px;
+    width: 348px;
 }
 .nav_butt button{
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 500;
-    width: 250px;
+    font-size: 16px;
+    height: 35px;
+    width: 210px;
+    padding-top: 5px;
     border: 1px solid rgb(122, 104, 9);
     background-color: rgb(248, 233, 156);
     box-shadow: 0px 2px 5px black;
@@ -249,10 +252,10 @@ h1{
 #next_match{
     border: 1px solid rgb(33, 143, 216);
     background-color: rgb(83, 253, 168);
-    margin-right: 25px;
+    margin-right: 22px;
 }
 #main_menu {
-    margin-left: 25px;
+    margin-left: 22px;
 }
 
 #scoreboard {
@@ -265,6 +268,7 @@ h1{
     padding: 2px;
     padding-bottom: 0px;
     text-align: center;
+    font-size: 14.2px;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     box-shadow: 0px 5px 12px black;
     background-color: #F3E9D3;
@@ -272,7 +276,7 @@ h1{
     border-top-right-radius: 12px;
 }
 #player1, #player2, #draw {
-    width: 100px;
+    width: 90px;
 }
 #player1::after, #player2::after{
     content: '';

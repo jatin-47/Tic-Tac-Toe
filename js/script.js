@@ -242,6 +242,8 @@ function medium_level(newBoard, player)
         if(newBoard[i] == 0)
             availSpots.push(i);
     }
+
+    // if terminal state reaches, return with the score
     if(checkWin(newBoard, opponent_mark)) //let opponent(ai) be the minimizer
         return {score: -10};
     else if(checkWin(newBoard, player_mark)) // let player1(human) be the maximiser
@@ -249,12 +251,18 @@ function medium_level(newBoard, player)
     else if(availSpots.length == 0) // tie 
         return {score: 0};
 
+    //storing score and index for each move possible from the given board state
     var moves = [];
+
+     // loop through all available spots
     for (var i = 0; i < availSpots.length; i++)
     {
+        //create an object for each and store the index of that spot 
         var move = {};
         move.index = availSpots[i];
-        newBoard[availSpots[i]] = player;
+        newBoard[availSpots[i]] = player; // set the empty spot to the current player
+
+        //collect the score resulted from calling minimax on the opponent of the current player
         if (player == opponent_mark){
             var result = medium_level(newBoard, player_mark);
             move.score = result.score;
@@ -262,18 +270,24 @@ function medium_level(newBoard, player)
         else{
             var result = medium_level(newBoard, opponent_mark);
             move.score = result.score;
-        }        
+        }     
+        // reset the spot to empty for the next loop itereration   
         newBoard[availSpots[i]] = 0;
+        // push the object to the array
         moves.push(move);
     }
 
+    // evaluating the best move in the moves array (i.e. all the possible moves)
     var bestMove;
+
     if(  Math.random() > 0.8 ) //randomness
     {
         bestMove = Math.floor( Math.random() * moves.length );
     }
     else
     {
+        //if it is the ai's turn loop over the moves and choose the move with the lowest score 
+        //as we have taken ai as the minimiser
         if(player === opponent_mark)
         {
             var bestScore = 10000;
@@ -285,7 +299,7 @@ function medium_level(newBoard, player)
                 }
             }
         }
-        else 
+        else // else loop over the moves and choose the move with the highest score (as human player is the maximiser)
         {
             var bestScore = -10000;
             for(var i = 0; i < moves.length; i++){
@@ -297,11 +311,14 @@ function medium_level(newBoard, player)
             }
         }
     }
+    // return the chosen move (object) from the moves array
     return moves[bestMove];
 }
 
 //minimax algorithm with alpha-beta pruning optimization
-function minimax(newBoard, depth, player)
+//Alpha is the best value that the maximizer (human) currently can guarantee at that level or below.
+//Beta is the best value that the minimizer (ai) currently can guarantee at that level or below.
+function minimax(newBoard, depth, alpha, beta, player)
 {
     // calculating the playable spots in a board state
     var availSpots = [];
@@ -313,71 +330,64 @@ function minimax(newBoard, depth, player)
 
     // if terminal state reaches, return with the score
     if(checkWin(newBoard, opponent_mark)) //let opponent(ai) be the minimizer
-        return {score: -10+depth};
+        return {score: -20+depth};
     else if(checkWin(newBoard, player_mark)) // let player1(human) be the maximiser
-        return {score: 10-depth};
+        return {score: 20-depth};
     else if(availSpots.length == 0) // tie 
         return {score: 0};
 
 
-    //storing score and index for each move possible from the given board state
-    var moves = [];
-
-    // loop through all available spots
-    for (var i = 0; i < availSpots.length; i++)
-    {
-        //create an object for each and store the index of that spot 
-        var move = {};
-        move.index = availSpots[i];
-        newBoard[availSpots[i]] = player; // set the empty spot to the current player
-
-        //collect the score resulted from calling minimax on the opponent of the current player
-        if (player == opponent_mark){
-            var result = minimax(newBoard, depth+1, player_mark);
-            move.score = result.score;
-        }
-        else{
-            var result = minimax(newBoard, depth+1, opponent_mark);
-            move.score = result.score;
-        }
-
-        // reset the spot to empty for the next loop itereration
-        newBoard[availSpots[i]] = 0;
-        // push the object to the array
-        moves.push(move);
-    }
-
-
-    // evaluating the best move in the moves array (i.e. all the possible moves)
-    var bestMove;
-
-    //if it is the ai's turn loop over the moves and choose the move with the lowest score 
-    //as we have taken ai as the minimiser
+    //if it is the ai's turn, lowest score (as we have taken ai as the minimiser)
     if(player === opponent_mark)
     {
         var bestScore = 10000;
-        for(var i = 0; i < moves.length; i++){
-            if(moves[i].score < bestScore)
+        var bestMove = {};
+        for(var i = 0; i < availSpots.length; i++)
+        {
+            newBoard[availSpots[i]] = player; // set the empty spot to the current player
+            
+            var value = minimax(newBoard, depth+1, alpha, beta, player_mark);
+            if(value.score < bestScore)
             {
-                bestScore = moves[i].score;
-                bestMove = i;
+                bestScore = value.score;
+                bestMove.index = availSpots[i];
+                bestMove.score = bestScore;
             }
+
+            // reset the spot to empty for the next loop itereration
+            newBoard[availSpots[i]] = 0;
+
+            beta = Math.min(beta,bestScore);
+            if(beta <= alpha)
+                break;
         }
+        return bestMove;
     }
-    else // else loop over the moves and choose the move with the highest score (as human player is the maximiser)
+    else // else highest score (as human player is the maximiser)
     {
         var bestScore = -10000;
-        for(var i = 0; i < moves.length; i++){
-            if(moves[i].score > bestScore)
-            {
-                bestScore = moves[i].score;
-                bestMove = i;
-            }
-        }
-    }
+        var bestMove = {};
+        for(var i = 0; i < availSpots.length; i++)
+        {
+            newBoard[availSpots[i]] = player; // set the empty spot to the current player
 
-    // return the chosen move (object) from the moves array
-    return moves[bestMove];
+            var value = minimax(newBoard, depth+1, alpha, beta, opponent_mark);
+            if(value.score > bestScore)
+            {
+                bestScore = value.score;
+                bestMove.index = availSpots[i];
+                bestMove.score = bestScore;
+            }
+
+            // reset the spot to empty for the next loop itereration
+            newBoard[availSpots[i]] = 0;
+
+            alpha = Math.max(alpha,bestScore);
+            if(beta <= alpha)
+                break;    
+        }
+        return bestMove;
+    }
 }
 
 function AI_move()
@@ -386,8 +396,8 @@ function AI_move()
         return easy_level();
     else if(ai_level == "M")
         return medium_level(origBoard, opponent_mark).index;
-    else
-        return minimax(origBoard, 0, opponent_mark).index;
+    else if(ai_level == "I")
+        return minimax(origBoard, 0, -10000, 10000, opponent_mark).index;
 }
 
 function check_ai_turn()
